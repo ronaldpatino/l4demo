@@ -2,18 +2,36 @@ local anim8 = require 'anim8'
 
 debug = true
 
+player = { x = 50, y = 50, speed = 150, img = nil, animation = nil }
+
 function love.load(arg)
-  image = love.graphics.newImage('assets/ld.png')
-  local g = anim8.newGrid(200 , 320, image:getWidth(), image:getHeight())
-  animation = anim8.newAnimation(g('1-8',1), 0.1)
+  player.img = love.graphics.newImage('assets/ld.png')
+  local g = anim8.newGrid(200 , 320, player.img:getWidth(), player.img:getHeight())
+  player.animation = anim8.newAnimation(g('1-8',1), 0.1)
+
 end
 
 function love.update(dt)
-  animation:update(dt)
+  if love.keyboard.isDown('escape') then
+		love.event.push('quit')
+	end
+
+  if love.keyboard.isDown('left','a') then
+    if player.x > 0 then -- binds us to the map
+      player.x = player.x - (player.speed*dt)
+    end
+  elseif love.keyboard.isDown('right','d') then
+    if player.x < (love.graphics.getWidth() - 200) then
+      player.x = player.x + (player.speed*dt)
+    end
+  end
+
+
+  player.animation:update(dt)
 end
 
 function love.draw(dt)
-  animation:draw(image, 50, 50)
+  player.animation:draw(player.img, player.x, player.y)
 end
 
 
