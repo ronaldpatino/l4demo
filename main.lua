@@ -26,6 +26,15 @@ function love.update(dt)
     end
   end
 
+  if love.keyboard.isDown('up','w') then
+    if player.y > 0 then -- binds us to the map
+      player.y = player.y - (player.speed*dt)
+    end
+  elseif love.keyboard.isDown('down','s') then
+    if player.y < (love.graphics.getWidth() - 200) then
+      player.y = player.y + (player.speed*dt)
+    end
+  end
 
   player.animation:update(dt)
 end
